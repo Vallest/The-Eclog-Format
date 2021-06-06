@@ -1,0 +1,160 @@
+body {
+	color: rgb(51, 51, 51);
+}
+
+a {
+	color: rgb(51, 51, 51);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+#content {
+	padding-bottom: 4em;
+}
+
+#toc li {
+	list-style: none;
+}
+
+#content ul ul {
+	margin: 0;
+	padding-left: 1.5em;
+}
+
+#content li {
+	line-height: 1.5em;
+}
+
+#content p {
+	line-height: 1.4em;
+}
+
+#content a {
+	color: rgb(51, 51, 51);
+	text-decoration: none;
+}
+
+#content a:hover {
+	text-decoration: underline;
+}
+
+#content h1 {
+	margin: 1em 0 0.5em 0;
+	font-size: 2.4em;
+}
+
+#content h2 {
+	line-height: 1.8em;
+	font-size: 1.5em;
+}
+
+#content h3 {
+	line-height: 1.8em;
+	font-size: 1.2em;
+}
+
+#content table {
+	width: 100%;
+	text-align: left;
+	border: 1px solid #202020;
+	border-collapse: collapse;
+}
+
+#content th {
+	border-bottom: 1px solid rgb(51, 51, 51);
+	padding: 0.5em;
+}
+
+#content td {
+	border-bottom: 1px dashed rgb(51, 51, 51);
+	padding: 0.1em 0.5em 0.1em 0.5em;
+}
+
+#content pre {
+	margin: 0 1em;
+	border-style: dotted;
+	border-width: 1px;
+	padding: 0.5em;
+	line-height: 1.2em;
+	font-size: 0.95em;
+	overflow: auto;
+	-ms-overflow-style: scrollbar;
+}
+
+#content code {
+	font-family: "Courier New",
+	"Courier",
+	/* macOS 10.10+ */ "Menlo",
+	/* Windows 6+ */ "Consolas",
+	/* Android 4+ */ "Roboto Mono",
+	/* Ubuntu 10.10+ */ "Ubuntu Monospace",
+	/* KDE Plasma 5+ */ "Noto Mono",
+	/* KDE Plasma 4+ */ "Oxygen Mono",
+	/* Linux/OpenOffice fallback */ "Liberation Mono",
+	/* fallback */ monospace,
+	/* macOS emoji */ "Apple Color Emoji",
+	/* Windows emoji */ "Segoe UI Emoji",
+	/* Windows emoji */ "Segoe UI Symbol",
+	/* Linux emoji */ "Noto Color Emoji";
+	font-size: 1em;
+	background-color: rgb(240, 240, 240);
+}
+
+#content pre>code {
+	font-family:
+	/* macOS 10.10+ */ "Menlo",
+	/* Windows 6+ */ "Consolas",
+	/* Android 4+ */ "Roboto Mono",
+	/* Ubuntu 10.10+ */ "Ubuntu Monospace",
+	/* KDE Plasma 5+ */ "Noto Mono",
+	/* KDE Plasma 4+ */ "Oxygen Mono",
+	/* Linux/OpenOffice fallback */ "Liberation Mono",
+	/* fallback */ monospace,
+	/* macOS emoji */ "Apple Color Emoji",
+	/* Windows emoji */ "Segoe UI Emoji",
+	/* Windows emoji */ "Segoe UI Symbol",
+	/* Linux emoji */ "Noto Color Emoji";
+	font-size: 0.9em;
+	background-color: white;
+}
+
+footer {
+	border-top: 2px solid rgb(51, 51, 51);
+	padding-bottom: 1em;
+}
+
+footer .sitemap {
+	
+}
+
+footer .sitemap ul {
+	display: flex;
+	justify-content: space-between;
+}
+
+footer .sitemap ul li {
+	text-transform: uppercase;
+}
+
+footer .copyright {
+	margin-top: 2em;
+	font-size: 0.95em;
+}
+
+footer .copyright span {
+	display: inline-block;
+}
+
+footer .logos {
+	margin-top: 2em;
+}
+
+footer img.logo {
+	margin-right: 16px;
+	filter: grayscale(100%);
+	filter: opacity(30%);
+}
+

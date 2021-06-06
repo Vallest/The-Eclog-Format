@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width initial-scale=1">
+<link href="css/sanitize.css" rel="stylesheet">
+<link href="css/plain.css" rel="stylesheet">
+<title>Grammar Of Eclog</title>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BQX8ETCDPP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BQX8ETCDPP');
+</script>
+</head>
+<body>
+<pre>
+eclog = ws ( object | [ pair-list ] ) ws
+object = &#39;{&#39; ws [ pair-list ] ws &#39;}&#39;
+array = &#39;[&#39; ws [ value-list ] ws &#39;]&#39;
+pair-list = pair *( separator pair ) [ ws &#39;,&#39; ]
+value-list = value *( separator value ) [ ws &#39;,&#39; ]
+pair = string ws &#39;:&#39; ws value
+value = object | array | string | number | boolean | null
+separator = ( ws &#39;,&#39; ws ) | ( wsp line-break ws )
+string = unquoted-string | ( non-unquoted-string *( ws &#39;+&#39; ws non-unquoted-string ) )
+non-unquoted-string = quoted-string | raw-string | heredoc-string
+quoted-string = &#39;&quot;&#39; *( unescaped | &#39;\&#39; escape ) &#39;&quot;&#39;
+unescaped = %x09 | %x20-21 | %x23-5B | %x5D-10FFFF
+escape = &#39;&quot;&#39; | &#39;\&#39; | &#39;/&#39; | &#39;b&#39; | &#39;f&#39; | &#39;n&#39; | &#39;r&#39; | &#39;t&#39; | &#39;u&#39; 4hex | &#39;u&#39; &#39;{&#39; 1*6hex &#39;}&#39;
+unquoted-string = ( letter | &#39;_&#39; ) *( letter | digit | &#39;_&#39; | &#39;-&#39; | &#39;.&#39; )
+raw-string = &#39;@&#39; delimiter0-16 &#39;&quot;&#39; *char &#39;&quot;&#39; delimiter0-16
+heredoc-string = &#39;|&#39; delimiter1-16 line-break *( *char line-break ) wsp delimiter1-16 line-break
+char = %x09 | %x20-10FFFF
+delimiter0-16 = *16( letter | digit | &#39;_&#39; )
+delimiter1-16 = 1*16( letter | digit | &#39;_&#39; )
+number = [ sign ] ( ( significand [ exponent ] ) | &quot;inf&quot; | &quot;nan&quot; )
+significand = integer [ fractional ]
+integer = &#39;0&#39; | ( digit1-9 *digit )
+fractional = &#39;.&#39; 1*digit
+exponent = e [ sign ] ( &#39;0&#39; | ( digit1-9 *digit ) )
+sign = &#39;+&#39; | &#39;-&#39;
+letter = &#39;A&#39;-&#39;Z&#39; | &#39;a&#39;-&#39;z&#39;
+digit = &#39;0&#39;-&#39;9&#39;
+digit1-9 = &#39;1&#39;-&#39;9&#39;
+hex = digit | &#39;A&#39;-&#39;F&#39; | &#39;a&#39;-&#39;f&#39;
+e = &#39;e&#39; | &#39;E&#39;
+boolean = &quot;true&quot; | &quot;false&quot;
+null = &quot;null&quot;
+ws = *( %x20 | %x09 | %x0D | %x0A )
+wsp = *( %x20 | %x09 )
+line-break = %x0D | %x0A | %x0D %x0A
+</pre>
+</body>
+</html>

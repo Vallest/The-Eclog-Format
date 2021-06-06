@@ -1,0 +1,240 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width initial-scale=1">
+<meta name="description" content="Eclog is a JSON-like, text-based, lightweight, language-independent data interchange format. Its design aims to be simple, easy to use, explicit, and elegant. It is suitable for data interchange, storage, configuration, and description.">
+<link href="css/sanitize.css" rel="stylesheet">
+<link href="css/typography.css" rel="stylesheet">
+<link href="css/page.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<title>The Eclog Format</title>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BQX8ETCDPP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BQX8ETCDPP');
+</script>
+</head>
+<body>
+<div id="content">
+<h1>The Eclog Format</h1>
+<p><em>Draft v0.9.0</em></p>
+<h2>Abstract</h2>
+<p>Eclog is a JSON-like, text-based, lightweight, language-independent data interchange format. Its design aims to be simple, easy to use, explicit, and elegant. It is suitable for data interchange, storage, configuration, and description.</p>
+<h2>Table of Contents</h2>
+<div id="toc">
+<ul>
+<li><a href="#1-basics">1. Basics</a></li>
+<li><a href="#2-objects">2. Objects</a></li>
+<li><a href="#3-arrays">3. Arrays</a></li>
+<li><a href="#4-strings">4. Strings</a>
+<ul>
+<li><a href="#4-1-quoted-strings">4.1. Quoted Strings</a></li>
+<li><a href="#4-2-unquoted-strings">4.2. Unquoted Strings</a></li>
+<li><a href="#4-3-raw-strings">4.3. Raw Strings</a></li>
+<li><a href="#4-4-heredoc-strings">4.4. Heredoc Strings</a></li>
+<li><a href="#4-5-concatenation">4.5. Concatenation</a></li>
+</ul>
+</li>
+<li><a href="#5-numbers">5. Numbers</a></li>
+<li><a href="#6-booleans">6. Booleans</a></li>
+<li><a href="#7-nulls">7. Nulls</a></li>
+<li><a href="#8-comments">8. Comments</a></li>
+<li><a href="#9-json-compatibility">9. JSON Compatibility</a></li>
+</ul>
+</div>
+<h2 id="1-basics">1. Basics</h2>
+<ul>
+<li>An Eclog text is encoded in UTF-8 (without a byte order mark).</li>
+<li>An Eclog text is a sequence of tokens; the set of tokens includes seven structural characters, strings, numbers, Booleans, and nulls.</li>
+<li>The seven structural characters are curly brackets, square brackets, colon, comma, and plus sign.</li>
+<li>An Eclog text is an object.</li>
+<li>Whitespace and comments are allowed before and after any token.</li>
+<li>A whitespace character is any of the following: horizontal tab, space, CR, and LF.</li>
+<li>A line break can take three forms: CR, LF, and CRLF.</li>
+</ul>
+<h2 id="2-objects">2. Objects</h2>
+<p>An object structure is represented as a pair of curly brackets surrounding zero or more key-value pairs; for the root object (the Eclog text), curly brackets can be omitted.</p>
+<p>A key is a string; a value can be an object, array, string, number, Boolean, or null.</p>
+<p>A colon separates each key from the value, and there is also a comma after each value, separating the value from the next pair&#39;s key. The comma can be omitted if the next pair&#39;s key starts on a new line. A trailing comma is allowed after the last pair.</p>
+<p>Example:</p>
+<pre><code># Person.ecl
+
+firstName: John
+lastName: Smith
+
+isAlive: true
+age: 27
+
+address:
+{
+    streetAddress: &quot;21 2nd Street&quot;
+    city: &quot;New York&quot;
+    state: NY
+    postalCode: &quot;10021-3100&quot;
+}
+
+phoneNumbers:
+[
+    { type: home, number: &quot;212 555-1234&quot; }
+    { type: office, number: &quot;646 555-4567&quot; }
+    { type: mobile, number: &quot;123 456-7890&quot; }
+]
+
+children: []
+spouse: null
+</code></pre>
+<p>Keys are case-sensitive and must have at least one character.</p>
+<p>Keys within an object should be unique. If a key is duplicated, the parser will take only the last of the duplicated key-value pairs.</p>
+<h2 id="3-arrays">3. Arrays</h2>
+<p>An array structure is represented as a pair of square brackets surrounding zero or more values. A value can be an object, array, string, number, Boolean, or null.</p>
+<p>A comma comes after each value, separating the value from the next one; the comma can be omitted if the next value starts on a new line. A trailing comma is allowed after the last value.</p>
+<p>Example:</p>
+<pre><code>[
+    0.1, 2.0
+    &quot;ordered&quot;
+    false
+    null
+]
+</code></pre>
+<h2 id="4-strings">4. Strings</h2>
+<p>Eclog offers four kinds of strings: quoted strings, unquoted strings, raw strings, and heredoc strings.</p>
+<h3 id="4-1-quoted-strings">4.1. Quoted Strings</h3>
+<p>Like conventions used in the C family of programming languages, a quoted string begins and ends with quotation marks. All Unicode characters can be placed within the quotation marks, except for the characters that must be escaped: quotation mark, backslash, and control characters other than horizontal tab.</p>
+<p>Example:</p>
+<pre><code>&quot;Hello,\nWorld!&quot;
+</code></pre>
+<p>Any character may be escaped; available escape sequences are:</p>
+<table>
+<thead><tr><th>Escape sequence</th><th>Unicode code point</th><th>Character represented</th></tr></thead>
+<tbody>
+	<tr><td><code>\&quot;</code></td><td>U+0022</td><td>Double quotation mark</td></tr>
+	<tr><td><code>\\</code></td><td>U+005C</td><td>Backslash</td></tr>
+	<tr><td><code>\/</code></td><td>U+002F</td><td>Forward slash</td></tr>
+	<tr><td><code>\b</code></td><td>U+0008</td><td>Backspace</td></tr>
+	<tr><td><code>\f</code></td><td>U+000C</td><td>Form feed</td></tr>
+	<tr><td><code>\n</code></td><td>U+000A</td><td>Newline</td></tr>
+	<tr><td><code>\r</code></td><td>U+000D</td><td>Carriage Return</td></tr>
+	<tr><td><code>\t</code></td><td>U+0009</td><td>Horizontal Tab</td></tr>
+	<tr><td><code>\uhhhh</code></td><td>U+0000–U+FFFF</td><td>&nbsp;</td></tr>
+	<tr><td><code>\u{...}</code></td><td>Any</td><td>&nbsp;</td></tr>
+</tbody>
+</table>
+<p>A Unicode escape sequence can take two forms: <code>\u</code> followed by four hex digits (four-digit form), or <code>\u</code> followed by a pair of curly brackets surrounding 1–6 hex digits (variable-length form).</p>
+<p>A character outside the Basic Multilingual Plane (U+0000–U+FFFF) is allowed to be encoded as two code units, namely a UTF-16 surrogate pair.</p>
+<p>Examples:</p>
+<pre><code>&quot;\u6587\u5b57&quot;
+&quot;\u{a}\u{61}&quot;
+&quot;\u{10437}&quot;
+&quot;\ud801\udc37&quot;      # U+10437 is encoded as a surrogate pair
+</code></pre>
+<h3 id="4-2-unquoted-strings">4.2. Unquoted Strings</h3>
+<p>An unquoted string has no explicit delimiters. It begins with a letter or an underscore, and it ends when a character other than allowed characters is reached. Allowed characters are letters, digits, underscore, hyphen-minus, and period.</p>
+<p><strong>Note</strong>: The five keywords (<code>true</code>, <code>false</code>, <code>null</code>, <code>inf</code>, and <code>nan</code>) are not unquoted strings and cannot be used as keys.</p>
+<p>Examples:</p>
+<pre><code>timeout: 90
+ip-address: &quot;127.0.0.1&quot;
+config.cipher: aes256-ctr
+_length_: 4096
+access: allow-from-all
+</code></pre>
+<h3 id="4-3-raw-strings">4.3. Raw Strings</h3>
+<p>A raw string begins with <code>@delimiter&quot;</code> and ends with <code>&quot;delimiter</code>. All Unicode characters can be placed within the delimiters, except for the control characters other than horizontal tab.</p>
+<p>The identifier <code>delimiter</code> consists of zero to 16 characters; each character can be a letter, a digit, or an underscore.</p>
+<p>As long as <code>&quot;delimiter</code> is not a substring of the string literal, the raw string is well-formed. Therefore, if the string literal does not contain double quotation marks, the identifier <code>delimiter</code> can be empty.</p>
+<p>Examples:</p>
+<pre><code># A Windows path; &#39;\&#39; characters do not need to be escaped
+path: @&quot;C:\Program Files\Microsoft SDKs\Windows&quot;
+
+# A regex that contains a double quotation mark
+regex: @ddd&quot;&lt;\s*img[^&gt;]+src\s*=\s*([&quot;&#39;])(.*?)\1[^&gt;]*&gt;&quot;ddd
+</code></pre>
+<h3 id="4-4-heredoc-strings">4.4. Heredoc Strings</h3>
+<p>A heredoc string begins with <code>|delimiter</code> followed by a line break, and it ends when a separate line with <code>delimiter</code> on it is reached. All Unicode characters can be placed within the delimiters, except for the control characters other than horizontal tab, CR, and LF.</p>
+<p>The line breaks in the string literal will remain as they are. N indent characters (horizontal tabs and spaces) will be removed from the beginning of each line, where N is the end delimiter&#39;s indent.</p>
+<p>The identifier <code>delimiter</code> consists of one to 16 characters; each character can be a letter, a digit, or an underscore.</p>
+<p>Example:</p>
+<pre><code># A &quot;Hello, World!&quot; program in C
+prog_c: |EOF
+    #include &lt;stdio.h&gt;
+
+    int main(void)
+    {
+        printf(&quot;Hello, World!\n&quot;);
+    }
+    EOF
+</code></pre>
+<h3 id="4-5-concatenation">4.5. Concatenation</h3>
+<p>The plus sign can join two or more strings end-to-end as one; each string could be a quoted string, raw string, or heredoc string.</p>
+<p>Examples:</p>
+<pre><code>str: &quot;Hello&quot; + &quot;, World!&quot;
+path: @&quot;C:\&quot; + @&quot;Windows\&quot; + &quot;Fonts&quot;
+</code></pre>
+<h2 id="5-numbers">5. Numbers</h2>
+<p>A number can represent a finite numeric value, infinity, or NaN (Not-A-Number).</p>
+<p>As with most programming languages, a finite number begins with an optional plus or minus sign, followed by three parts: an integer part, a fraction part, and an exponent part. The integer part is required; it must contain at least one digit and not start with zero. The fraction part and the exponent part are both optional.</p>
+<p>A fraction part is a decimal point followed by one or more digits.</p>
+<p>An exponent part is indicated by the letter <code>e</code> or <code>E</code>, followed by an optional plus or minus sign, followed by one or more digits. As with the integer part, leading zeros are not allowed.</p>
+<p>The special values <code>inf</code> and <code>nan</code>, which stand for infinity and NaN, can also have plus or minus signs.</p>
+<p>Examples:</p>
+<pre><code>ii: -1
+e: 2.7182818
+length: 40075
+speed: 3e8
+mass: 1.98855e30
+distance: +inf
+result: -nan
+</code></pre>
+<h2 id="6-booleans">6. Booleans</h2>
+<p>A Boolean can only take one of two possible values: <code>true</code> or <code>false</code>.</p>
+<p>Examples:</p>
+<pre><code>async: true
+dev: false
+</code></pre>
+<h2 id="7-nulls">7. Nulls</h2>
+<p>A null can only take one possible value: <code>null</code>.</p>
+<p>Example:</p>
+<pre><code>list: null
+</code></pre>
+<h2 id="8-comments">8. Comments</h2>
+<p>A comment begins with a number sign and continues until a line break or EOF is reached. All Unicode characters can be placed in the comment, except for the control characters other than horizontal tab.</p>
+<p>Examples:</p>
+<pre><code># config.ecl
+
+host_name: &quot;127.0.0.1&quot;      # localhost
+port: 4502
+#timeout: 3600
+max_pool_size: 5            # 0 indicates no limit
+#connection_debug: false
+</code></pre>
+<h2 id="9-json-compatibility">9. JSON Compatibility</h2>
+<p>A valid JSON text is also a valid Eclog text when the following are true:</p>
+<ol>
+<li>The JSON text is encoded in UTF-8.</li>
+<li>The JSON text is an object.</li>
+</ol>
+</div>
+<footer>
+<div class="sitemap">
+<nav>
+<ul>
+<li><a href="grammar_draft_v0_9_0.html">Grammar</a></li>
+<li><a href="projects.html">Projects</a></li>
+<li><a href="mailto:support@vallest.com">Contact</a></li>
+</ul>
+</nav>
+</div>
+<div class="logos">
+<img src="images/eclog_logo.svg" class="logo" width="128px" height="31.2px" alt="Eclog Logo">
+<img src="images/vallest_logo.svg" class="logo" width="128px" height="31.3167px" alt="Vallest Logo">
+</div>
+<div class="copyright">
+<span>Copyright &copy; <script>document.write(new Date().getFullYear())</script> by Vallest Systems LLC.</span> <span>All Rights Reserved.</span>
+</div>
+</footer>
+</body>
+</html>
