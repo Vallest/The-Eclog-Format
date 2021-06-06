@@ -1,6 +1,6 @@
 # The Eclog Format
 
-*Draft v0.9.0*
+*Draft v0.9.1*
 
 ## Abstract
 
@@ -70,8 +70,6 @@ phoneNumbers:
 children: []
 spouse: null
 ```
-
-Keys are case-sensitive and must have at least one character.
 
 Keys within an object should be unique. If a key is duplicated, the parser will take only the last of the duplicated key-value pairs.
 

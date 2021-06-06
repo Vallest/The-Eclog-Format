@@ -22,7 +22,7 @@
 <body>
 <div id="content">
 <h1>The Eclog Format</h1>
-<p><em>Draft v0.9.0</em></p>
+<p><em>Draft v0.9.1</em></p>
 <h2>Abstract</h2>
 <p>Eclog is a JSON-like, text-based, lightweight, language-independent data interchange format. Its design aims to be simple, easy to use, explicit, and elegant. It is suitable for data interchange, storage, configuration, and description.</p>
 <h2>Table of Contents</h2>
@@ -88,7 +88,6 @@ phoneNumbers:
 children: []
 spouse: null
 </code></pre>
-<p>Keys are case-sensitive and must have at least one character.</p>
 <p>Keys within an object should be unique. If a key is duplicated, the parser will take only the last of the duplicated key-value pairs.</p>
 <h2 id="3-arrays">3. Arrays</h2>
 <p>An array structure is represented as a pair of square brackets surrounding zero or more values. A value can be an object, array, string, number, Boolean, or null.</p>
